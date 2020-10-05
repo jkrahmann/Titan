@@ -119,7 +119,7 @@ void vioso_plugin::update(double time)
 			}
 			logStr(2, "INFO: vioso_plugin.dll: VWB_init succeeded.\n" );
 			VWB_WarpBlendMesh mesh;
-			err = VWB_getWarpBlendMesh(pWarper, 21, 21, mesh);
+			err = VWB_getWarpBlendMesh(pWarper, 65, 65, mesh);
 			if (VWB_ERROR_NONE == err )
 			{
 				logStr(2, "INFO: vioso_plugin.dll: VWB_getWarpBlendMesh succeeded.\n");
@@ -129,12 +129,12 @@ void vioso_plugin::update(double time)
 				ot::sdm_vertex*  vtx = new ot::sdm_vertex[nVtx];
 				for (coid::uint i = 0; i != nVtx; i++)
 				{
-					vtx[i]._vtx[0] = mesh.vtx[i].pos[0] * 2 -1;
-					vtx[i]._vtx[1] = -mesh.vtx[i].pos[1] * 2 +1;
-					vtx[i]._uv[0] = (uint16)MIN(65535, MAX(0, mesh.vtx[i].uv[0] * 65535 /* / mesh.dim.cx */));
-					vtx[i]._uv[1] = 1 - (uint16)MIN(65535, MAX(0, mesh.vtx[i].uv[1] * 65535 /* / mesh.dim.cy */));
-					float alpha = (mesh.vtx[i].rgb[0] + mesh.vtx[i].rgb[1] + mesh.vtx[i].rgb[2]) / 3.0f;
-					vtx[i]._alpha = (uint(floor(alpha * 255 + 0.5f)) << 24) + 0xffffff;;
+					vtx[i]._vtx[0] =  mesh.vtx[i].pos[0] * 2 - 1;
+					vtx[i]._vtx[1] = -mesh.vtx[i].pos[1] * 2 + 1;
+					vtx[i]._uv[0] =   (uint16)MIN( 65535, MAX(0, mesh.vtx[i].uv[0] * 65535 /* / mesh.dim.cx */));
+					vtx[i]._uv[1] =   (uint16)MIN( 65535, MAX(0, ( 1.0f - mesh.vtx[i].uv[1] ) * 65535 /* / mesh.dim.cy */));
+					float alpha =     ( mesh.vtx[i].rgb[0] + mesh.vtx[i].rgb[1] + mesh.vtx[i].rgb[2] ) / 3.0f;
+					vtx[i]._alpha =   ( uint( floor( alpha * 255 + 0.5f ) ) << 24 ) + 0xffffff;
 				}
 				logStr(2, "INFO: vioso_plugin.dll: calculating1 mesh succeeded.\n");
 
